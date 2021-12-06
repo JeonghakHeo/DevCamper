@@ -28,6 +28,28 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   })
 })
 
+// @desc    Get single course
+// @route   POST /api/v1/courses/:id
+// @access  Private
+exports.getCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findById(req.params.id).populate({
+    path: 'bootcamp',
+    select: 'name description',
+  })
+
+  if (!course) {
+    return next(
+      new ErrorResponse(`No course with the id of $${req.params.id}`),
+      404
+    )
+  }
+
+  res.status(200).json({
+    success: true,
+    data: course,
+  })
+})
+
 // @desc    Add course
 // @route   POST /api/v1/bootcamp/:bootcampId/courses
 // @access  Private
@@ -53,22 +75,46 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
   })
 })
 
-exports.getCourse = asyncHandler(async (req, res, next) => {
-  const course = await Course.findById(req.params.id).populate({
-    path: 'bootcamp',
-    select: 'name description',
-  })
+// @desc    Update course
+// @route   PUT /api/v1/courses/:id
+// @access  Private
+exports.updateCourse = asyncHandler(async (req, res, next) => {
+  let course = await Course.findById(req.params.id)
 
   if (!course) {
     return next(
-      new ErrorResponse(`No course with the id of $${req.params.id}`),
-      404
+      new ErrorResponse(`No course found with the id of ${req.params.id}`, 404)
     )
   }
+
+  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
 
   res.status(200).json({
     success: true,
     data: course,
+  })
+})
+
+// @desc    Delete course
+// @route   DELETE /api/v1/courses/:id
+// @access  Private
+exports.deleteCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findById(req.params.id)
+
+  if (!course) {
+    return next(
+      new ErrorResponse(`No course found with the id of ${req.params.id}`, 404)
+    )
+  }
+
+  await course.remove()
+
+  res.status(200).json({
+    success: true,
+    data: {},
   })
 })
 
