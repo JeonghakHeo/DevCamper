@@ -1,11 +1,12 @@
 const express = require('express')
-const { getCourses } = require('../controllers/courses')
+const { getCourses, getCourse, addCourse } = require('../controllers/courses')
 
 const router = express.Router({ mergeParams: true })
 
 // app.use('/api/v1/courses')
 // router.use('/:bootcampId/courses', courseRouter)
-router.route('/').get(getCourses)
+router.route('/').get(getCourses).post(addCourse)
+router.route('/:id').get(getCourse)
 
 module.exports = router
 

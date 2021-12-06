@@ -88,7 +88,10 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/bootcamps/:id
 // @access  Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findById(req.params.id)
+  const bootcamp = await Bootcamp.findById(req.params.id).populate({
+    path: 'courses',
+    select: 'title',
+  })
 
   // for correctly formatted but doesn't exist
   if (!bootcamp) {
@@ -198,6 +201,6 @@ exports.getBootcampsInRadius = async (req, res, next) => {
 // 36.1.4. const startIndex = (page - 1) * limit const endIndex = page * limit
 // 36.1.5. construct pagination result
 
-// 39.1. reverse populate
+// 39.1. Reverse populate
 // 39.1.1. query = Bootcamp.find(JSON.parse(queryString)).populate('courses') <- courses is virtual field on Bootcamp model
 // 39.1.2. query = Bootcamp.find(JSON.parse(queryString)).populate({ path: 'courses', select: 'title description'})
