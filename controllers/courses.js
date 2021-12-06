@@ -12,7 +12,10 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   if (req.params.bootcampId) {
     query = Course.find({ bootcamp: req.params.bootcampId })
   } else {
-    query = Course.find()
+    query = Course.find().populate({
+      path: 'bootcamp',
+      select: 'name description',
+    })
   }
 
   const courses = await query
@@ -23,3 +26,6 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
     data: courses,
   })
 })
+
+// ** NOTES **
+// 39.1. populate('bootcamp') <- Course is assoicated with Bootcamp model on field of bootcamp

@@ -30,7 +30,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   )
 
   // Finding resoruce
-  query = Bootcamp.find(JSON.parse(queryString))
+  query = Bootcamp.find(JSON.parse(queryString)).populate('courses')
   // console.log('queryString: ', queryString)
 
   // Select Fields
@@ -50,7 +50,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 
   // Pagination
   const page = parseInt(req.query.page, 10) || 1
-  const limit = parseInt(req.query.limit, 10) || 2 // 2 items per page
+  const limit = parseInt(req.query.limit, 10) || 20 // 20 items per page
   const startIndex = (page - 1) * limit
   const endIndex = page * limit
   const total = await Bootcamp.countDocuments()
@@ -130,13 +130,15 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @route   DELETE /api/v1/bootcamp/:id
 // @access  Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
+  const bootcamp = await Bootcamp.findById(req.params.id)
 
   if (!bootcamp) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     )
   }
+
+  bootcamp.remove()
 
   res.status(200).json({ success: true, data: {} })
 })
@@ -195,3 +197,7 @@ exports.getBootcampsInRadius = async (req, res, next) => {
 // 36.1.3. ㅁㅁㅁㅁㅁ/ㅁㅁㅁㅁㅁ/{ㅁ}ㅁㅁㅁ{ㅁ}/ㅁㅁㅁㅁㅁ/ㅁㅁ {ㅁ}startIndex {ㅁ}endIndex
 // 36.1.4. const startIndex = (page - 1) * limit const endIndex = page * limit
 // 36.1.5. construct pagination result
+
+// 39.1. reverse populate
+// 39.1.1. query = Bootcamp.find(JSON.parse(queryString)).populate('courses') <- courses is virtual field on Bootcamp model
+// 39.1.2. query = Bootcamp.find(JSON.parse(queryString)).populate({ path: 'courses', select: 'title description'})
