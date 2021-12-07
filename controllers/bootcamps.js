@@ -112,7 +112,7 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 })
 
 // @desc    Update bootcamp
-// @route   PUT /api/v1/bootcamp/:id
+// @route   PUT /api/v1/bootcamps/:id
 // @access  Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
@@ -130,7 +130,7 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 })
 
 // @desc    Delete bootcamp
-// @route   DELETE /api/v1/bootcamp/:id
+// @route   DELETE /api/v1/bootcamps/:id
 // @access  Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id)
@@ -147,7 +147,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 })
 
 // @desc    Get Bootcamps within Radius
-// @route   GET /api/v1/bootcamp/radius/:zipcode/:distance
+// @route   GET /api/v1/bootcamps/radius/:zipcode/:distance
 // @access  Private
 exports.getBootcampsInRadius = async (req, res, next) => {
   const { zipcode, distance } = req.params
@@ -158,7 +158,7 @@ exports.getBootcampsInRadius = async (req, res, next) => {
 
   // Calculate radius using radians
   // Divide distance by radius of Earth
-  // Earth radisu = 6,378km
+  // Earth radius = 6,378km
   const radius = distance / 6378
 
   const bootcamps = await Bootcamp.find({
@@ -173,6 +173,23 @@ exports.getBootcampsInRadius = async (req, res, next) => {
     data: bootcamps,
   })
 }
+
+// @desc    Upload photo for bootcamp
+// @route   PUT /api/v1/bootcamps/:id/photo
+// @access  Private
+exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findById(req.params.id)
+
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    )
+  }
+
+  if (!req.files) {
+    return next(new ErrorResponse('Please upload a file', 400))
+  }
+})
 
 // ** NOTES **
 // 23.1. mongoose functions[find(), findById(), etc] are async -> await
