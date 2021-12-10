@@ -1,3 +1,4 @@
+const path = require('path')
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
 const geocoder = require('../utils/geocoder')
@@ -10,7 +11,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   // console.log('req.qeury: ', req.query)
   let query
 
-  // Copry req.query
+  // Copy req.query
   const reqQuery = { ...req.query }
   // console.log('reqQuery: ', reqQuery)
 
@@ -189,8 +190,42 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   if (!req.files) {
     return next(new ErrorResponse('Please upload a file', 400))
   }
-})
 
+  // console.log(req.files)
+
+  const file = req.files.file
+
+  // Make sure the file is image
+  if (!file.mimetype.startsWith('image')) {
+    return next(new ErrorResponse('Please upload an image file', 400))
+  }
+
+  // Check file size
+  if (file.size > process.MAX_FILE_SIZE) {
+    return next(
+      new ErrorResponse(
+        `Please upload an image less than ${process.MAX_FILE_SIZE}`,
+        400
+      )
+    )
+  }
+
+  // Create custom filename
+  file.name = `photo_${bootcamp._id}${path.parse(file.name).ext}`
+
+  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+    if (err) {
+      console.error(error)
+      return next(new ErrorResponse('Problem with file upload', 500))
+    }
+
+    await Bootcamp.findByIdAndUpdate(req.params.id, { photo: file.name })
+    res.json({
+      success: true,
+      data: file.name,
+    })
+  })
+})
 // ** NOTES **
 // 23.1. mongoose functions[find(), findById(), etc] are async -> await
 // 23.2. try catch to handle erros e.g. bootcamps have the same name

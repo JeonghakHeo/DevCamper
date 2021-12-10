@@ -3,7 +3,7 @@ const ErrorResponse = require('../utils/errorResponse')
 const errorHandler = (err, req, res, next) => {
   let error = { ...err }
 
-  error.messagse = err.message
+  error.message = err.message
 
   console.log(err)
   // Mongoose bad ObjectId
