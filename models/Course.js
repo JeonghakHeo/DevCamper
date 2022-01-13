@@ -36,6 +36,11 @@ const CourseSchema = new mongoose.Schema({
     ref: 'Bootcamp',
     required: true,
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 })
 
 // Static method to get average of course tuition
@@ -52,7 +57,7 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
   } catch (err) {
     console.log(err)
   }
-  console.log(object)
+  // console.log(object)
 }
 
 // Call getAverageCost after save
