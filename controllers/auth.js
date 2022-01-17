@@ -196,14 +196,3 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
   })
 }
-
-// ** NOTES **
-// 48.1. User Login
-// 48.1.1. .select('+password') <- to be able to compare password
-
-// 49.1. Sending JWT in cookie
-// 49.1.1. cookie-parser package
-// 49.1.2. access to res.cookies('cookieName', cookie, options)
-// 49.1.3. options: {expires, httpOnly, secure}
-// 49.1.4. httpOnly prevents client-side scripts from accessing data
-// 49.1.5. secure flag forbids a cookie to be ever transmitted over simple HTTP

@@ -31,7 +31,3 @@ const errorHandler = (err, req, res, next) => {
 }
 
 module.exports = errorHandler
-
-// ** NOTES **
-// 27.1. CastError = incorrectly formatted ObjectId
-// 28.1. check out err

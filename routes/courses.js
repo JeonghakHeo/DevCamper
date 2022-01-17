@@ -14,8 +14,6 @@ const router = express.Router({ mergeParams: true })
 const advancedResults = require('../middleware/advancedResults')
 const { protect, authorize } = require('../middleware/auth')
 
-// app.use('/api/v1/courses')
-// router.use('/:bootcampId/courses', courseRouter)
 router
   .route('/')
   .get(
@@ -33,8 +31,3 @@ router
   .delete(protect, authorize('publisher', 'admin'), deleteCourse)
 
 module.exports = router
-
-// 38.1. mergeParamas: true for re-route from bootcamps.js
-// @route   GET /api/v1/courses
-// @route   GET /api/v1/bootcamp/:bootcampId/courses
-// router.use('/:bootcampId/courses', courseRouter)

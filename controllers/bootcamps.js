@@ -199,33 +199,3 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
     })
   })
 })
-// ** NOTES **
-// 23.1. mongoose functions[find(), findById(), etc] are async -> await
-// 23.2. try catch to handle erros e.g. bootcamps have the same name
-// 23.3. must handle issues for both *correctly formatted _id* but doesn't exist and *just incorrectly formatted _id*
-// 23.3.1. Error: Cannot set headers after they are sent to the client if no *return* for *correctly formatted _id* but doesn't exist
-// 24.1. findByIdAndUpdate(id, update, options{new: true, runValidators: true })
-
-// 25.1. pass error to next() for error handling
-
-// 34.1. MongoDB operators $gt https://docs.mongodb.com/manual/reference/operator/query/gt/
-// 34.2. manipulate query to match $gt
-// 34.3. queryString to JSON.stringfy(req.query) and JSON.parse(queryString)
-// 34.4. ?careers[in]=Data Science = ?careers[in]=Data%20Science
-
-// 35.1. select & sort -> query.select(fields) query.sort(sortBy)
-// 35.1.1. query.select('name occupation'); white-space sperated
-// 35.1.2. mongoose look at select as a field from model
-// 35.1.3. have to remove from fields
-// 35.1.4. query.select(fields) -> if(req.qeury.select) {}
-
-// 36.1. pagination
-// 36.1.1. need page, limit, startIndex, endIndex, total = await Bootcamp.countDocuments()
-// 36.1.2. page, limit comes from url (string) -> parseInt(page, radix) || default value
-// 36.1.3. ㅁㅁㅁㅁㅁ/ㅁㅁㅁㅁㅁ/{ㅁ}ㅁㅁㅁ{ㅁ}/ㅁㅁㅁㅁㅁ/ㅁㅁ {ㅁ}startIndex {ㅁ}endIndex
-// 36.1.4. const startIndex = (page - 1) * limit const endIndex = page * limit
-// 36.1.5. construct pagination result
-
-// 39.1. Reverse populate
-// 39.1.1. query = Bootcamp.find(JSON.parse(queryString)).populate('courses') <- courses is virtual field on Bootcamp model
-// 39.1.2. query = Bootcamp.find(JSON.parse(queryString)).populate({ path: 'courses', select: 'title description'})

@@ -71,7 +71,3 @@ CourseSchema.post('remove', function () {
 })
 
 module.exports = mongoose.model('Course', CourseSchema)
-
-// 37.1. create relationsihp between Course and Bootcamp
-// 37.1.1. need special mongoose type: mongoose.Schema.ObjectId <- will look for _id
-// 37.1.2. ref: model

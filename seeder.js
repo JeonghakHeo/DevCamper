@@ -34,7 +34,7 @@ const importData = async () => {
     await User.create(users)
     await Review.create(reviews)
 
-    console.log('Data imported...'.green.inverse)
+    console.log('Data imported..'.green.inverse)
     process.exit()
   } catch (err) {
     console.log(err)
@@ -49,7 +49,7 @@ const deleteData = async () => {
     await User.deleteMany()
     await Review.deleteMany()
 
-    console.log('Data destroyed'.red.inverse)
+    console.log('Data destroyed..'.red.inverse)
     process.exit()
   } catch (err) {
     console.log(err)

@@ -151,17 +151,3 @@ BootcampSchema.virtual('courses', {
 })
 
 module.exports = mongoose.model('Bootcamp', BootcampSchema)
-
-// ** NOTES **
-// required: [true, 'custom message']
-// url friendly string DevCenter Bootcamp -> devcenter-bootcamp
-// match: [regex, ] custom validation
-// 31.1. Geocoder doc  https://www.npmjs.com/package/node-geocoder
-
-// 39.1. Virtuals are document properties that you can get and set but that do not get persisted to MongoDB.
-// 39.1.1. { toJSON: { virtuals: true }, toObject: { virtuals: true } }
-// 39.1.2. Schema.virtual(fieldName, options)
-// 39.1.3. options: { ref: model, localField: id, foreignField: refField, justOne: false <- retun array}
-// 39.2. Cascade delete
-// 39.2.1. Schema.pre('remove', async function(next) {})
-// 39.2.2. In the this.model('Course') part,  'this' refers to the bootcamp document being deleted, and we use the 'model' method (https://mongoosejs.com/docs/api.html#connection_Connection-model) in order to retrieve the document related to the Course model. This way the 'courses' document gets retrieved and the deletemany() method is applied to those courses that have a matching bootcamp-id.

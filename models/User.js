@@ -76,7 +76,3 @@ UserSchema.methods.getResetPasswordToken = function () {
   return resetToken
 }
 module.exports = mongoose.model('User', UserSchema)
-
-// ** NOETES **
-// 45.1. User model
-// 45.1.1. password: { select: false } exclude from querying
