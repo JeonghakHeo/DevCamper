@@ -141,6 +141,3 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
     data: {},
   })
 })
-
-// ** NOTES **
-// 39.1. populate('bootcamp') <- Course is assoicated with Bootcamp model on field of bootcamp
