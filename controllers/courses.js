@@ -30,8 +30,8 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
 })
 
 // @desc    Get single course
-// @route   POST /api/v1/courses/:id
-// @access  Private
+// @route   GET /api/v1/courses/:id
+// @access  Public
 exports.getCourse = asyncHandler(async (req, res, next) => {
   const course = await Course.findById(req.params.id).populate({
     path: 'bootcamp',

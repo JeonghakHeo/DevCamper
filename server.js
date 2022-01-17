@@ -5,6 +5,12 @@ const colors = require('colors')
 const morgan = require('morgan')
 const fileupload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
+const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet')
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit')
+const hpp = require('hpp')
+const cors = require('cors')
 const errorHandler = require('./middleware/errorHandler')
 const connectDB = require('./config/db')
 // Load env vars
@@ -36,6 +42,29 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // File uploading
 app.use(fileupload())
+
+// Sanitize Data
+app.use(mongoSanitize())
+
+// Set security headers
+app.use(helmet())
+
+// Prevent XSS attacks
+app.use(xss())
+
+// Limit requests
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+})
+
+app.use(limiter)
+
+// Prevent http parameter pollution
+app.use(hpp())
+
+// Enable CORS
+app.use(cors())
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps)
